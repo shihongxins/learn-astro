@@ -1,0 +1,47 @@
+---
+import BaseLayout from "../../layouts/Layout.astro";
+import BlogPost from "../../components/BlogPost.astro";
+
+// ❗通过导出 getStaticPaths 函数来定义动态路由的路径。
+export async function getStaticPaths() {
+  // ❗这里应该返回一个数组，数组中的每个对象都包含一个 params 属性，该属性是一个动态路径的参数。
+  // ❗例如，如果您的动态路径是 /posts/[id]/[slug]，那么 params 应该包含 id 和 slug 两个属性。
+
+  const allPosts = await Astro.glob("../posts/*.md");
+  // ❗也可通过 props 属性传递额外的数据给页面组件。
+  const props = { posts: allPosts };
+
+  return [
+    { params: { tag: "astro" }, props },
+    { params: { tag: "successes" }, props },
+    { params: { tag: "community" }, props },
+    { params: { tag: "blogging" }, props },
+    { params: { tag: "setbacks" }, props },
+    { params: { tag: "learning in public" }, props },
+  ];
+}
+
+// ❗通过全局 Astro.params 对象来访问动态路径的参数。
+const { tag } = Astro.params;
+// ❗通过全局 Astro.props 对象来访问传递给页面组件的 props。
+const { posts } = Astro.props;
+// 过滤符合当前页 tag 的文章 post
+const filteredPosts = posts.filter((post) =>
+  post.frontmatter.tags.includes(tag)
+);
+---
+
+<BaseLayout pageTitle={tag}>
+  <p>包含「{tag}」标签的文章</p>
+  <ul>
+    {
+      filteredPosts.map((post) => (
+        <BlogPost
+          url={post.url}
+          title={post.frontmatter.title}
+          pubDate={post.frontmatter.pubDate}
+        />
+      ))
+    }
+  </ul>
+</BaseLayout>
