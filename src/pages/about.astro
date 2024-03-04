@@ -24,76 +24,54 @@ const fontWeight = "bold";
 const textCase = "uppercase";
 
 // 导入组件
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
+import Layout from "../layouts/Layout.astro";
 ---
 
-<!doctype html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="description" content="Astro description" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{pageTitle}</title>
+<Layout pageTitle={pageTitle}>
+  <h2>……和我的新 Astro 网站！</h2>
 
-    <!-- 定义独立样式，并声明和绑定 CSS 变量 -->
-    <style define:vars={{ skillColor, fontWeight, textCase }}>
-      h1 {
-        color: purple;
-        font-size: 4em;
-      }
-      .skill {
-        color: var(--skillColor);
-        font-weight: var(--fontWeight);
-        text-transform: var(--textCase);
-      }
-    </style>
-  </head>
-  <body>
-    <!-- 使用组件 -->
-    <Header />
+  <p>
+    我正在学习 Astro
+    的入门教程。这是我网站上的第二个页面，也是我自己建立的第一页面！
+  </p>
 
-    <h1>{pageTitle}</h1>
-    <h2>……和我的新 Astro 网站！</h2>
+  <p>随着我完成更多教程，该站点将更新，所以请继续查看我的旅程将如何进行吧！</p>
+  <p>以下是关于我的几个事实：</p>
+  <ul>
+    <!-- ❗在模板符 {} 中插入变量实现文本插值 -->
+    <li>我的名字是{identity.firstName}.</li>
+    <li>我住在{identity.country}。我的职业是{identity.occupation}。</li>
+    <!-- ❗在模板符 {} 中使用短路运算 && 或 || 符进行条件渲染 -->
+    {
+      identity.hobbies.length >= 2 && (
+        <li>
+          我的两个习惯：{identity.hobbies[0]}和{identity.hobbies[1]}
+        </li>
+      )
+    }
+  </ul>
+  <p>我的技能是：</p>
+  <ul>
+    <!-- ❗在模板符中 {} 中调用数值方法 .map() 实现重复列表渲染 -->
+    {skills.map((skill) => <li class="skill">{skill}</li>)}
+  </ul>
 
-    <p>
-      我正在学习 Astro
-      的入门教程。这是我网站上的第二个页面，也是我自己建立的第一页面！
-    </p>
+  {happy && <p>我非常乐意学习 Astro！</p>}
 
-    <p>
-      随着我完成更多教程，该站点将更新，所以请继续查看我的旅程将如何进行吧！
-    </p>
-    <p>以下是关于我的几个事实：</p>
-    <ul>
-      <!-- ❗在模板符 {} 中插入变量实现文本插值 -->
-      <li>我的名字是{identity.firstName}.</li>
-      <li>我住在{identity.country}。我的职业是{identity.occupation}。</li>
-      <!-- ❗在模板符 {} 中使用短路运算 && 或 || 符进行条件渲染 -->
-      {
-        identity.hobbies.length >= 2 && (
-          <li>
-            我的两个习惯：{identity.hobbies[0]}和{identity.hobbies[1]}
-          </li>
-        )
-      }
-    </ul>
-    <p>我的技能是：</p>
-    <ul>
-      <!-- ❗在模板符中 {} 中调用数值方法 .map() 实现重复列表渲染 -->
-      {skills.map((skill) => <li class="skill">{skill}</li>)}
-    </ul>
+  {finished && <p>我完成了这节教程！</p>}
 
-    {happy && <p>我非常乐意学习 Astro！</p>}
+  {goal === 3 ? <p>我的目标是在三天内完成。</p> : <p>我的目标不是 3 天。</p>}
+</Layout>
 
-    {finished && <p>我完成了这节教程！</p>}
-
-    {goal === 3 ? <p>我的目标是在三天内完成。</p> : <p>我的目标不是 3 天。</p>}
-    <Footer />
-    <script>
-      import "../scripts/menu.js";
-    </script>
-  </body>
-</html>
+<!-- 定义独立样式，并声明和绑定 CSS 变量 -->
+<style define:vars={{ skillColor, fontWeight, textCase }}>
+  h1 {
+    color: purple;
+    font-size: 4em;
+  }
+  .skill {
+    color: var(--skillColor);
+    font-weight: var(--fontWeight);
+    text-transform: var(--textCase);
+  }
+</style>
