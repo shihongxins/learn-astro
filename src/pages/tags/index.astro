@@ -1,26 +1,24 @@
 ---
-import Layout from "./Layout.astro";
+import Layout from "../../layouts/Layout.astro";
 
-const { frontmatter } = Astro.props;
+const pageTitle = "标签索引页";
+
+const allPosts = await Astro.glob("../posts/*.md");
+const allUniqueTags = [
+  ...new Set(allPosts.flatMap((post) => post.frontmatter.tags)),
+];
 ---
 
-<Layout pageTitle={frontmatter.title}>
-  <p>时间： {frontmatter.pubDate.toString().slice(0, 10)}</p>
-  <p>
-    <em>{frontmatter.description}</em>
-  </p>
-  <p>作者： {frontmatter.author}</p>
-  <img src={frontmatter.image.url} width="300" alt={frontmatter.image.alt} />
+<Layout pageTitle={pageTitle}>
   <div class="tags">
     {
-      frontmatter.tags.map((tag) => (
+      allUniqueTags.map((tag) => (
         <p class="tag">
           <a href={`/tags/${tag}`}>{tag}</a>
         </p>
       ))
     }
   </div>
-  <slot />
 </Layout>
 
 <style>
