@@ -1,9 +1,70 @@
-<body>
-  <a href="/">Home</a>
-  <a href="/about/">About</a>
-  <a href="/blog/">Blog</a>
-  <h1>About Me</h1>
-  <p>
-    My name is <strong>John Doe</strong>.
-  </p>
-</body>
+---
+/* ❗在 frontmatter 中声明属性/变量 */
+const pageTitle = "关于我";
+
+const identity = {
+  firstName: "石",
+  country: "中国",
+  occupation: "前端工程师",
+  hobbies: ["看电影", "听音乐", "打游戏"],
+};
+
+const skills = ["HTML", "CSS", "JavaScript", "Vue", "Astro"];
+
+const happy = true;
+const finished = false;
+const goal = 3;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro description" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <a href="/">首页</a>
+    <a href="/about/">关于</a>
+    <a href="/blog/">博客</a>
+    <h1>{pageTitle}</h1>
+    <h2>……和我的新 Astro 网站！</h2>
+
+    <p>
+      我正在学习 Astro
+      的入门教程。这是我网站上的第二个页面，也是我自己建立的第一页面！
+    </p>
+
+    <p>
+      随着我完成更多教程，该站点将更新，所以请继续查看我的旅程将如何进行吧！
+    </p>
+    <p>以下是关于我的几个事实：</p>
+    <ul>
+      <!-- ❗在模板符 {} 中插入变量实现文本插值 -->
+      <li>我的名字是{identity.firstName}.</li>
+      <li>我住在{identity.country}。我的职业是{identity.occupation}。</li>
+      <!-- ❗在模板符 {} 中使用短路运算 && 或 || 符进行条件渲染 -->
+      {
+        identity.hobbies.length >= 2 && (
+          <li>
+            我的两个习惯：{identity.hobbies[0]}和{identity.hobbies[1]}
+          </li>
+        )
+      }
+    </ul>
+    <p>我的技能是：</p>
+    <ul>
+      <!-- ❗在模板符中 {} 中调用数值方法 .map() 实现重复列表渲染 -->
+      {skills.map((skill) => <li>{skill}</li>)}
+    </ul>
+
+    {happy && <p>我非常乐意学习 Astro！</p>}
+
+    {finished && <p>我完成了这节教程！</p>}
+
+    {goal === 3 ? <p>我的目标是在三天内完成。</p> : <p>我的目标不是 3 天。</p>}
+  </body>
+</html>
