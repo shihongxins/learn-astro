@@ -1,11 +1,15 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Card from "../components/Card.astro";
+import Greeting from "../components/Greeting.jsx";
 
 const pageTitle = "首页";
 ---
 
 <Layout pageTitle={pageTitle}>
+  <!-- ❗注意，为什么第一个组件的按钮点击无响应？ -->
+  <Greeting messages={["Hi", "Hello", "Howdy", "Hey there"]} />
+  <Greeting messages={["嗨", "哈啰", "你好", "嘿 这儿"]} client:load />
   <main>
     <svg
       class="astro-a"
